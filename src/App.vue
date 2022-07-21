@@ -1,15 +1,41 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>Timer Project</h1>
+    <button @click="start" :disabled="isPlaying">Play</button>
+    <Block_cpnVue v-if="isPlaying" :delay="delay" @end="endGame"/>
+    <Results_cpnVue v-if="showResult" :score="score"/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Block_cpnVue from './components/Block_cpn.vue'
+import Results_cpnVue from './components/Results_cpn.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Block_cpnVue,
+    Results_cpnVue
+  },
+  data() {
+    return {
+      isPlaying: false,
+      delay: null,
+      score: null,
+      showResult: false
+    }
+  },
+  methods: {
+    start() {
+      this.delay = 2000 + Math.random() * 5000
+      this.isPlaying = true
+      this.showResult = false
+    },
+    endGame(reactionTime) {
+      this.score = reactionTime
+      this.isPlaying = false
+      this.showResult = true
+    }
   }
 }
 </script>
@@ -22,5 +48,20 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+button {
+  background: #0faf87;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin: 10px;
+}
+button[disabled] {
+  opacity: 0.2;
+  cursor: not-allowed;
 }
 </style>
